@@ -1,0 +1,17 @@
+FROM node:18-alpine
+
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+RUN npm install -g node-gyp
+# RUN apt update
+# RUN apt install python3 make gcc g++ -y
+
+WORKDIR /app
+
+COPY src /app/src
+COPY package.json .
+COPY package-lock.json .
+COPY .proxyrc .
+
+RUN npm install
+
+CMD ["npm", "start"]
