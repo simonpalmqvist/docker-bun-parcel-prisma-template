@@ -4,8 +4,18 @@ export function App() {
   const [message, setMessage] = useState();
   useEffect(() => {
     fetch("/api")
-      .then(async (response) => response.json())
+      .then((response) => response.json())
       .then(({ message }) => setMessage(message));
+
+    // fetch("/api/users", {
+    //   method: "POST",
+    //   headers: { "content-type": "application/json" },
+    //   body: JSON.stringify({ username: "Simon" }),
+    // });
+
+    fetch("/api/users")
+      .then((response) => response.json())
+      .then(console.log);
   }, []);
 
   return <h1>{message ?? "Loading..."}</h1>;

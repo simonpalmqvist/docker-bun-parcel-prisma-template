@@ -1,28 +1,16 @@
 version: "3"
 services:
-  # postgres-dev:
-  #   image: postgres:15
-  #   container_name: postgres-dev
-  #   environment:
-  #     - POSTGRES_USER=${DEV_POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
-  #     - POSTGRES_DB=${DEV_POSTGRES_DB}
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - pgdata-dev:/var/lib/postgresql/data
-
-  # nextjs-dev:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile.dev
-  #   container_name: nextjs-dev
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - NEXT_PUBLIC_API_URL=${DEV_NEXT_PUBLIC_API_URL}
-  #   volumes:
-  #     - ./frontend:/usr/src/app
+  postgres:
+    image: postgres:15
+    container_name: postgres-dev
+    environment:
+      - POSTGRES_USER=${DEV_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DEV_POSTGRES_DB}
+    expose:
+      - "5432:5432"
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
 
   frontend:
     build:
@@ -43,11 +31,13 @@ services:
     container_name: backend
     expose:
       - "3000:3000"
-    # depends_on:
-    #   - postgres-dev
+    ports:
+      - "5555:5555"
+    depends_on:
+      - postgres
     environment:
       - DATABASE_URL=${DEV_DATABASE_URL}
     volumes:
       - ./backend:/app
-# volumes:
-#   pgdata-dev:
+volumes:
+  pgdata-dev:
