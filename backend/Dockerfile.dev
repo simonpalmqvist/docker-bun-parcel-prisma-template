@@ -6,5 +6,4 @@ COPY . .
 
 RUN bun install
 
-
 CMD ["bun", "run", "dev"]
