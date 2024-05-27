@@ -53,5 +53,7 @@ services:
       - DATABASE_URL=${DEV_DATABASE_URL}
     volumes:
       - ./backend:/app
+      # This volume exists to generate api types for frontend on code changes
+      - ./frontend:/frontend
 volumes:
   pgdata-dev:

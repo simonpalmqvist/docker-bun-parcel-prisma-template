@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import { client } from "./api";
 
 export function App() {
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   useEffect(() => {
-    fetch("/api")
-      .then((response) => response.json())
-      .then(({ message }) => setMessage(message));
+    client("/message", {}).then(({ data }) => data && setMessage(data.message));
 
     // fetch("/api/users", {
     //   method: "POST",
@@ -13,8 +12,8 @@ export function App() {
     //   body: JSON.stringify({ username: "Simon" }),
     // });
 
-    fetch("/api/users")
-      .then((response) => response.json())
+    client("/users", { method: "GET" })
+      .then(({ data }) => data)
       .then(console.log);
   }, []);
 

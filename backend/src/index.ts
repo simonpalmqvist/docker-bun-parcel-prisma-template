@@ -1,10 +1,8 @@
 import { Elysia, t } from "elysia";
-import { PrismaClient } from "@prisma/client";
-
-const db = new PrismaClient();
+import { db } from "./db";
 
 const app = new Elysia()
-  .get("/", () => ({ message: "Hello from backend" }))
+  .get("/message", () => ({ message: "Hello from backend" }))
   .post(
     "/users",
     async (req) => db.user.create({ data: { username: req.body.username } }),
@@ -15,8 +13,13 @@ const app = new Elysia()
     }
   )
   .get("/users", async () => db.user.findMany())
+  .get("/user/:id", async ({ params: { id } }) =>
+    db.user.findUnique({ where: { id: Number(id) } })
+  )
   .listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
+
+export type App = typeof app;
